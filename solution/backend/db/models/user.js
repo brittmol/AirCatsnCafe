@@ -1,5 +1,5 @@
-'use strict';
-const { Model, Validator } = require('sequelize');
+"use strict";
+const { Model, Validator } = require("sequelize");
 const bcrypt = require("bcryptjs");
 
 module.exports = (sequelize, DataTypes) => {
@@ -15,14 +15,14 @@ module.exports = (sequelize, DataTypes) => {
       return User.scope("currentUser").findByPk(id);
     }
     static async login({ credential, password }) {
-      const { Op } = require('sequelize');
-      const user = await User.scope('loginUser').findOne({
+      const { Op } = require("sequelize");
+      const user = await User.scope("loginUser").findOne({
         where: {
-            email: credential,
+          email: credential,
         },
       });
       if (user && user.validatePassword(password)) {
-        return await User.scope('currentUser').findByPk(user.id);
+        return await User.scope("currentUser").findByPk(user.id);
       }
     }
     static async signup({ username, email, password }) {
@@ -35,12 +35,15 @@ module.exports = (sequelize, DataTypes) => {
         bio,
         hashedPassword,
       });
-      return await User.scope('currentUser').findByPk(user.id);
-    };
+      return await User.scope("currentUser").findByPk(user.id);
+    }
     static associate(models) {
       // define association here
+      User.hasMany(models.Spot, { foreignKey: "hostId" });
+      User.hasMany(models.Booking, { foreignKey: "userId" });
+      User.hasMany(models.Review, { foreignKey: "userId" });
     }
-  };
+  }
   User.init(
     {
       // username: {
