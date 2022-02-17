@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import Spots from "./components/Spots/AllSpots";
 import SingleSpot from "./components/Spots/SingleSpot";
+import CreateSpotForm from "./components/Spots/CreateSpotForm";
 // import LoginFormPage from "./components/LoginFormPage";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
@@ -38,6 +39,9 @@ function App() {
           </Route>
           <Route path="/spots/:spotId">
             <SingleSpot />
+          </Route>
+          <Route path="/create">
+            <CreateSpotForm />
           </Route>
         </Switch>
       )}

@@ -20,25 +20,25 @@ router.get(
   })
 );
 
-router.get(
-  "/:id",
-  asyncHandler(async (req, res) => {
-    const spot = await Spot.findByPk(req.params.id, {
-      include: [User],
-    });
-    return res.json(spot);
-  })
-);
-
-// router.post(
-//   "/",
-//   requireAuth,
-//   validateEvent,
+// router.get(
+//   "/:id",
 //   asyncHandler(async (req, res) => {
-//     const spot = await Spot.create(req.body);
+//     const spot = await Spot.findByPk(req.params.id, {
+//       include: [User],
+//     });
 //     return res.json(spot);
 //   })
 // );
+
+router.post(
+  "/",
+  requireAuth,
+  // validateSpot,
+  asyncHandler(async (req, res) => {
+    const spot = await Spot.create(req.body);
+    return res.json(spot);
+  })
+);
 
 // router.put(
 //   "/:id",
