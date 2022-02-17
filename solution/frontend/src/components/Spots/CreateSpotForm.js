@@ -30,34 +30,19 @@ function CreateSpotForm() {
       zipCode,
       hostId: sessionUser.id,
     };
-    // setErrors([]);
-    const spot = await dispatch(createSpot(payload));
-    console.log("spot dispatched", spot);
 
-    // .catch(async (res) => {
-    //   const data = await res.json();
-    //   if (data && data.errors) return setErrors(data.errors);
-    // });
+    // console.log("errorrrrrrrrrrrrrrrrrrrrrs", errors);
+    setErrors([])
+    const spot = await dispatch(createSpot(payload))
+        .catch(async(res) => {
+            const data = await res.json()
+            if(data && data.errors) return setErrors(data.errors)
+        })
+    // console.log("errors after", errors);
+
     if (spot) {
       history.push(`/spots/${spot.id}`);
     }
-
-    //   if (newSpotData) {
-    //       setErrors(newSpotData)
-    //   }
-
-    //   if (password === confirmPassword) {
-    //     setErrors([]);
-    //     return dispatch(
-    //       sessionActions.signup({ email, firstName, lastName, bio, password })
-    //     ).catch(async (res) => {
-    //       const data = await res.json();
-    //       if (data && data.errors) setErrors(data.errors);
-    //     });
-    //   }
-    //   return setErrors([
-    //     "Confirm Password field must be the same as the Password field",
-    //   ]);
   };
 
   return (
