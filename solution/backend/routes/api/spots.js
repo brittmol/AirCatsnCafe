@@ -31,7 +31,7 @@ const validateSpot = [
     .exists({ checkFalsy: true })
     .withMessage("Please provide a zip code for your spot.")
     .isLength({ min: 5, max: 5 })
-    .withMessage("Please provide a zip code between 1 and 5 for Rating"),
+    .withMessage("Please provide a valid zip code."),
   handleValidationErrors,
 ];
 
