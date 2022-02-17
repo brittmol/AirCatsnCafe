@@ -63,19 +63,20 @@ router.post(
   })
 );
 
-// router.put(
-//   "/:id",
-//   requireAuth,
-//   validateEvent,
-//   asyncHandler(async (req, res) => {
-//     const spot = await Spot.findByPk(req.params.id);
-//     const updatedSpot = await spot.update(req.body);
-//     const updatedSpotx = await Spot.findByPk(updatedSpot.id, {
-//       include: [User],
-//     });
-//     return res.json(updatedSpotx);
-//   })
-// );
+router.put(
+  "/:id",
+  requireAuth,
+  validateSpot,
+  asyncHandler(async (req, res) => {
+    const spot = await Spot.findByPk(req.params.id);
+    const updatedSpot = await spot.update(req.body);
+    // const updatedSpotx = await Spot.findByPk(updatedSpot.id, {
+    //   include: [User],
+    // });
+    // return res.json(updatedSpotx);
+    return res.json(updatedSpot);
+  })
+);
 
 // router.delete(
 //   "/:id",

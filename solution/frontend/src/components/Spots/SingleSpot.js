@@ -6,7 +6,8 @@ import EditSpotForm from "./EditSpotForm";
 
 export default function SingleSpot() {
   const { spotId } = useParams();
-//   console.log("spotId", spotId);
+  //   console.log("spotId", spotId);
+  // idk
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,7 +20,7 @@ export default function SingleSpot() {
   return (
     <>
       <h1>I made it to {spot?.title} </h1>
-      
+
       <EditSpotForm spot={spot} />
     </>
   );
