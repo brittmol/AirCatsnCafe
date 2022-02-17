@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getSpots } from "../../store/spots";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import EditSpotForm from "./EditSpotForm";
 
 export default function SingleSpot() {
   const { spotId } = useParams();
@@ -18,6 +19,8 @@ export default function SingleSpot() {
   return (
     <>
       <h1>I made it to {spot?.title} </h1>
+      
+      <EditSpotForm spot={spot} />
     </>
   );
 }

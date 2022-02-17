@@ -51,6 +51,29 @@ export const createSpot = (payload) => async (dispatch) => {
   }
 };
 
+export const updateSpot = (payload) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${payload.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(addSpot(data));
+    return data;
+  } else if (response.status < 500) {
+    const data = await response.json();
+    if (data.errors) {
+      return data.errors;
+    }
+  } else {
+    return ["An error occurred. Please try again."];
+  }
+};
+
 /* ------ REDUCER ------ */
 export default function spotReducer(state = {}, action) {
   let newState = {};
@@ -62,7 +85,7 @@ export default function spotReducer(state = {}, action) {
       return newState;
     }
     case ADD_SPOT: {
-      return newState = {...state, [action.spot.id]: action.spot}
+      return (newState = { ...state, [action.spot.id]: action.spot });
     }
     default:
       return state;
