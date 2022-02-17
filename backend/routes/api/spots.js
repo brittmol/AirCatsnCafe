@@ -78,16 +78,16 @@ router.put(
   })
 );
 
-// router.delete(
-//   "/:id",
-//   requireAuth,
-//   asyncHandler(async (req, res) => {
-//     const spot = await Spot.findByPk(req.params.id);
-//     if (!spot) throw new Error("Cannot find spot");
-//     await spot.destroy();
-//     return res.json({});
-//   })
-// );
+router.delete(
+  "/:id",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const spot = await Spot.findByPk(req.params.id);
+    if (!spot) throw new Error("Cannot find spot");
+    await spot.destroy();
+    return res.json({});
+  })
+);
 
 // ------------------ EXPORTS ------------------------------------------
 module.exports = router;

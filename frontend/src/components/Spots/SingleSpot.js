@@ -1,13 +1,14 @@
 import { useSelector, useDispatch } from "react-redux";
 import { getSpots } from "../../store/spots";
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import EditSpotForm from "./EditSpotForm";
+import { removeSpot } from "../../store/spots";
 
 export default function SingleSpot() {
   const { spotId } = useParams();
+  const history = useHistory();
   //   console.log("spotId", spotId);
-  // idk
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,7 +21,15 @@ export default function SingleSpot() {
   return (
     <>
       <h1>I made it to {spot?.title} </h1>
-
+      <button
+        onClick={() => {
+          dispatch(removeSpot(spot));
+          history.push(`/spots`);
+        }}
+      >
+        <i className="fas fa-trash-alt" />
+        Delete Spot
+      </button>
       <EditSpotForm spot={spot} />
     </>
   );
