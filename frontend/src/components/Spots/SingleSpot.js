@@ -30,7 +30,12 @@ export default function SingleSpot() {
         <i className="fas fa-trash-alt" />
         Delete Spot
       </button>
-      <EditSpotForm spot={spot} />
+      <EditSpotForm />
+      {/* <button>
+        <Link to={`/spots/${spot?.id}/edit`} spot={spot}>
+          Edit Spot
+        </Link>
+      </button> */}
     </>
   );
 }

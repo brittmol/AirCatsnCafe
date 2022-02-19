@@ -4,12 +4,16 @@ import { Redirect, useHistory } from "react-router-dom";
 import { useParams } from "react-router";
 import { updateSpot } from "../../store/spots";
 
-function EditSpotForm({ spot }) {
+function EditSpotForm() {
   const { spotId } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
 
   const sessionUser = useSelector((state) => state.session.user);
+  const spots = useSelector((store) => store.spotReducer);
+  const spot = spots[spotId];
+  // console.log("spot useSelector", spot);
+
   const [title, setTitle] = useState(spot?.title || "");
   const [description, setDescription] = useState(spot?.description || "");
   const [address, setAddress] = useState(spot?.address || "");
@@ -17,6 +21,8 @@ function EditSpotForm({ spot }) {
   const [state, setState] = useState(spot?.state || "");
   const [zipCode, setZipCode] = useState(spot?.zipCode || "");
   const [errors, setErrors] = useState([]);
+
+  const [clickEdit, setClickEdit] = useState(false)
 
   //   if (sessionUser) return <Redirect to="/" />;
 
@@ -36,21 +42,23 @@ function EditSpotForm({ spot }) {
 
     // console.log("errorrrrrrrrrrrrrrrrrrrrrs", errors);
     setErrors([]);
-    const spot = await dispatch(updateSpot(payload)).catch(async (res) => {
-      const data = await res.json();
-      if (data && data.errors) return setErrors(data.errors);
-    });
+    const updatedSpot = await dispatch(updateSpot(payload)).catch(
+      async (res) => {
+        const data = await res.json();
+        if (data && data.errors) return setErrors(data.errors);
+      }
+    );
     // console.log("errors after", errors);
 
-    if (spot) {
-      history.push(`/spots/${spotId}`);
+    if (updatedSpot) {
+      setClickEdit(false)
+      // history.push(`/spots/${spotId}`);
     }
   };
 
-  return (
-    <>
-      <h1>Edit Spot</h1>
-      <form onSubmit={handleSubmit}>
+  let form
+  if (clickEdit) {
+    form = <form onSubmit={handleSubmit}>
         <ul>
           {errors.map((error, idx) => (
             <li key={idx}>{error}</li>
@@ -58,7 +66,8 @@ function EditSpotForm({ spot }) {
         </ul>
         <input
           type="text"
-          placeholder="Title"
+          // placeholder="Title"
+          placeholder={title}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
@@ -92,7 +101,17 @@ function EditSpotForm({ spot }) {
           onChange={(e) => setZipCode(e.target.value)}
         />
         <button type="submit">Edit Spot</button>
+        <button onClick={() => setClickEdit(false)}>X</button>
       </form>
+
+  } else {
+    form = <button onClick={() => setClickEdit(true)}>Edit Spot</button>
+  }
+
+  return (
+    <>
+      <h1>Edit Spot</h1>
+      {form}
     </>
   );
 }

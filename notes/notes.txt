@@ -1,0 +1,61 @@
+when you want to drop migrations/seeds and recreate
+npm run db:reset
+
+brew services restart postgres
+
+
+heroku run npm run sequelize-cli db:migrate
+heroku run npm run sequelize-cli db:seed:all
+
+
+1. backend > api > route
+2. store
+
+
+
+--------
+npx dotenv sequelize db:migrate
+npx dotenv sequelize db:seed:all
+
+npx sequelize-cli seed:generate --name
+
+
+
+1. git status (brittanybranch)
+    git add
+    git commit -m
+    git push
+
+2. Go to Github, pull request
+    review ur own changes
+
+3. Someone else has to approve changes
+    also merge on git hub
+
+4. git checkout main
+    git pull (pulls new approved stuff to main)
+
+5. git checkout brittanybranch
+    git merge main (pulls updated main to ur own branch)
+
+
+RESTART PSQL:
+sudo service postgresql restart
+
+RESET DATABASE TO SEEDED FILES:
+flask seed reset
+
+
+npx sequelize model:generate --name User --attributes username:string,email:string,hashedPassword:string
+
+npx sequelize model:generate --name Spot --attributes title:string,description:text,hostId:integer,address:string,state:string,city:string,zipCode:integer
+npx sequelize model:generate --name Booking --attributes spotId:integer,userId:integer,startDate:date,endDate:date,price:integer,numGuests:integer
+npx sequelize model:generate --name Photo --attributes imgUrl:string,spotId:integer
+npx sequelize model:generate --name Review --attributes spotId:integer,userId:integer,comment:text,rating:integer
+npx sequelize model:generate --name Delete --attributes spotId:integer,userId:integer,comment:text,rating:integer
+
+
+on mistake branch, add and commit
+git log
+git checkout aa2ee5......... (of commit number) migrations/
+(pulls to main)
