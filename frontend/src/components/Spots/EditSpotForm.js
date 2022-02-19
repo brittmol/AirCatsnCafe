@@ -22,7 +22,7 @@ function EditSpotForm() {
   const [zipCode, setZipCode] = useState(spot?.zipCode || "");
   const [errors, setErrors] = useState([]);
 
-  const [clickEdit, setClickEdit] = useState(false)
+  const [clickEdit, setClickEdit] = useState(false);
 
   //   if (sessionUser) return <Redirect to="/" />;
 
@@ -51,14 +51,15 @@ function EditSpotForm() {
     // console.log("errors after", errors);
 
     if (updatedSpot) {
-      setClickEdit(false)
+      setClickEdit(false);
       // history.push(`/spots/${spotId}`);
     }
   };
 
-  let form
+  let form;
   if (clickEdit) {
-    form = <form onSubmit={handleSubmit}>
+    form = (
+      <form onSubmit={handleSubmit}>
         <ul>
           {errors.map((error, idx) => (
             <li key={idx}>{error}</li>
@@ -101,16 +102,15 @@ function EditSpotForm() {
           onChange={(e) => setZipCode(e.target.value)}
         />
         <button type="submit">Edit Spot</button>
-        <button onClick={() => setClickEdit(false)}>X</button>
+        <button onClick={() => {setClickEdit(false)}}>X</button>
       </form>
-
+    );
   } else {
-    form = <button onClick={() => setClickEdit(true)}>Edit Spot</button>
+    form = <button onClick={() => setClickEdit(true)}>Edit Spot</button>;
   }
 
   return (
     <>
-      <h1>Edit Spot</h1>
       {form}
     </>
   );

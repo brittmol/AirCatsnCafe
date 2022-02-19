@@ -10,6 +10,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import { Modal } from "./context/Modal";
 import EditSpotForm from "./components/Spots/EditSpotForm";
+import SplashPage from "./components/SplashPage/SplashPage";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -32,6 +33,9 @@ function App() {
           {/* <Route path="/login" >
             <LoginFormPage />
           </Route> */}
+          <Route exact path="/">
+            <SplashPage />
+          </Route>
           <Route exact path="/signup">
             <SignupFormPage />
           </Route>
