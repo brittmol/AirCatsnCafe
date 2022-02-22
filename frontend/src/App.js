@@ -45,10 +45,7 @@ function App() {
           <Route exact path="/spots/:spotId">
             <SingleSpot />
           </Route>
-          {/* <Route exact path="/spots/:spotId/edit">
-            <EditSpotForm />
-          </Route> */}
-          <Route exact path="/create">
+          <Route exact path="/spots/create">
             <CreateSpotForm />
           </Route>
         </Switch>

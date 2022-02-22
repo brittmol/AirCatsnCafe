@@ -1,9 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
 import { getSpots } from "../../store/spots";
 import { useEffect } from "react";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import EditSpotForm from "./EditSpotForm";
-import { removeSpot } from "../../store/spots";
+import DeleteSpotForm from "./DeleteSpotForm";
 
 export default function SingleSpot() {
   const { spotId } = useParams();
@@ -21,7 +21,7 @@ export default function SingleSpot() {
   return (
     <>
       <h1>I made it to {spot?.title} </h1>
-      <button
+      {/* <button
         onClick={() => {
           dispatch(removeSpot(spot));
           history.push(`/spots`);
@@ -29,13 +29,9 @@ export default function SingleSpot() {
       >
         <i className="fas fa-trash-alt" />
         Delete Spot
-      </button>
-      <EditSpotForm />
-      {/* <button>
-        <Link to={`/spots/${spot?.id}/edit`} spot={spot}>
-          Edit Spot
-        </Link>
       </button> */}
+      <DeleteSpotForm spot={spot} />
+      <EditSpotForm spot={spot} />
     </>
   );
 }
