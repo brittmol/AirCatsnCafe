@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     /**
@@ -11,23 +9,27 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Spot.belongsTo(models.User, {foreignKey: 'hostId'})
-      Spot.hasMany(models.Booking, {foreignKey: 'spotId'})
-      Spot.hasMany(models.Photo, {foreignKey: 'spotId'})
-      Spot.hasMany(models.Review, {foreignKey: 'spotId'})
+      Spot.belongsTo(models.User, { foreignKey: "hostId" });
+      Spot.hasMany(models.Booking, { foreignKey: "spotId" });
+      Spot.hasMany(models.Photo, { foreignKey: "spotId" });
+      Spot.hasMany(models.Review, { foreignKey: "spotId" });
     }
-  };
-  Spot.init({
-    title: DataTypes.STRING,
-    description: DataTypes.TEXT,
-    hostId: DataTypes.INTEGER,
-    address: DataTypes.STRING,
-    state: DataTypes.STRING,
-    city: DataTypes.STRING,
-    zipCode: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'Spot',
-  });
+  }
+  Spot.init(
+    {
+      title: DataTypes.STRING,
+      description: DataTypes.TEXT,
+      hostId: DataTypes.INTEGER,
+      address: DataTypes.STRING,
+      state: DataTypes.STRING,
+      city: DataTypes.STRING,
+      zipCode: DataTypes.INTEGER,
+      hrPrice: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "Spot",
+    }
+  );
   return Spot;
 };

@@ -21,15 +21,23 @@ module.exports = {
         references: { model: "Users" },
       },
       address: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       state: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       city: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       zipCode: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      hrPrice: {
+        allowNull: false,
         type: Sequelize.INTEGER,
       },
       createdAt: {

@@ -20,6 +20,7 @@ function EditSpotForm() {
   const [city, setCity] = useState(spot?.city || "");
   const [state, setState] = useState(spot?.state || "");
   const [zipCode, setZipCode] = useState(spot?.zipCode || "");
+  const [hrPrice, setHrPrice] = useState(spot?.hrPrice || "");
   const [errors, setErrors] = useState([]);
 
   const [clickEdit, setClickEdit] = useState(false);
@@ -37,6 +38,7 @@ function EditSpotForm() {
       city,
       state,
       zipCode,
+      hrPrice,
       hostId: sessionUser.id,
     };
 
@@ -78,6 +80,12 @@ function EditSpotForm() {
           onChange={(e) => setDescription(e.target.value)}
         />
         <input
+          type="integer"
+          placeholder="Price $"
+          value={hrPrice}
+          onChange={(e) => setHrPrice(e.target.value)}
+        />
+        <input
           type="text"
           placeholder="Address"
           value={address}
@@ -102,18 +110,20 @@ function EditSpotForm() {
           onChange={(e) => setZipCode(e.target.value)}
         />
         <button type="submit">Edit Spot</button>
-        <button onClick={() => {setClickEdit(false)}}>X</button>
+        <button
+          onClick={() => {
+            setClickEdit(false);
+          }}
+        >
+          X
+        </button>
       </form>
     );
   } else {
     form = <button onClick={() => setClickEdit(true)}>Edit Spot</button>;
   }
 
-  return (
-    <>
-      {form}
-    </>
-  );
+  return <>{form}</>;
 }
 
 export default EditSpotForm;
