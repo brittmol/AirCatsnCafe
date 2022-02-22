@@ -14,6 +14,7 @@ function CreateSpotForm() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
+  const [hrPrice, setHrPrice] = useState("");
   const [errors, setErrors] = useState([]);
 
   //   if (sessionUser) return <Redirect to="/" />;
@@ -28,6 +29,7 @@ function CreateSpotForm() {
       city,
       state,
       zipCode,
+      hrPrice,
       hostId: sessionUser.id,
     };
 
@@ -64,6 +66,12 @@ function CreateSpotForm() {
           placeholder="Write a description..."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+        />
+        <input
+          type="integer"
+          placeholder="Price $"
+          value={hrPrice}
+          onChange={(e) => setHrPrice(e.target.value)}
         />
         <input
           type="text"

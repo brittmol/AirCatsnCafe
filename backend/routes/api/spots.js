@@ -32,6 +32,11 @@ const validateSpot = [
     .withMessage("Please provide a zip code for your spot.")
     .isLength({ min: 5, max: 5 })
     .withMessage("Please provide a valid zip code."),
+  check("hrPrice")
+    .exists({ checkFalsy: true })
+    .withMessage("Please provide an hourly price for your spot.")
+    .isLength({ min: 1})
+    .withMessage("Please provide a valid hourly price."),
   handleValidationErrors,
 ];
 

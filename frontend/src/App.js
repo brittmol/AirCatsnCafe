@@ -9,7 +9,6 @@ import CreateSpotForm from "./components/Spots/CreateSpotForm";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import { Modal } from "./context/Modal";
-import EditSpotForm from "./components/Spots/EditSpotForm";
 import SplashPage from "./components/SplashPage/SplashPage";
 function App() {
   const dispatch = useDispatch();
@@ -45,9 +44,6 @@ function App() {
           <Route exact path="/spots/:spotId">
             <SingleSpot />
           </Route>
-          {/* <Route exact path="/spots/:spotId/edit">
-            <EditSpotForm />
-          </Route> */}
           <Route exact path="/create">
             <CreateSpotForm />
           </Route>
