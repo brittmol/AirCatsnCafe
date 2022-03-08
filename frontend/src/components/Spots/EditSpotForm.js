@@ -7,9 +7,6 @@ function EditSpotForm({ spot }) {
 
   const sessionUser = useSelector((state) => state.session.user);
 
-  console.log("spot hostId", spot?.hostId);
-  console.log("session user", sessionUser?.id);
-
   const [title, setTitle] = useState(spot?.title || "");
   const [description, setDescription] = useState(spot?.description || "");
   const [address, setAddress] = useState(spot?.address || "");

@@ -12,10 +12,6 @@ function DeleteSpotForm({spot}) {
 //   const spots = useSelector((store) => store.spotReducer);
 //   const spot = spots[spotId];
 
-  console.log("spot hostId", spot?.hostId);
-  console.log("session user", sessionUser?.id);
-
-
   let deleteBtn = <button
   onClick={() => {
     dispatch(removeSpot(spot));
