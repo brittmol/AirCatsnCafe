@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler");
 
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
 const { Spot } = require("../../db/models");
+const { Booking } = require("../../db/models");
 
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
@@ -35,7 +36,7 @@ const validateSpot = [
   check("hrPrice")
     .exists({ checkFalsy: true })
     .withMessage("Please provide an hourly price for your spot.")
-    .isLength({ min: 1})
+    .isLength({ min: 1 })
     .withMessage("Please provide a valid hourly price."),
   handleValidationErrors,
 ];
@@ -45,6 +46,19 @@ router.get(
   asyncHandler(async (req, res) => {
     const spots = await Spot.findAll();
     return res.json(spots);
+  })
+);
+
+router.get(
+  "/:id/bookings",
+  asyncHandler(async (req, res) => {
+    // const userId = req.session.auth.userId
+    const spotId = req.params.id;
+    const bookings = await Booking.findAll({
+      where: { spotId },
+      // order: ["startTime", "ASC"],
+    });
+    return res.json(bookings);
   })
 );
 
