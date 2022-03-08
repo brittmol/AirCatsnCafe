@@ -18,7 +18,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: { model: "Users" },
       },
-      reservation: {
+      startTime: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      endTime: {
         allowNull: false,
         type: Sequelize.DATE,
       },
@@ -26,11 +30,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      price: {
+      numGuests: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      numGuests: {
+      price: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
