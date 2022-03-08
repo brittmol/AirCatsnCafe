@@ -18,13 +18,13 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: { model: "Users" },
       },
-      startDate: {
+      reservation: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      endDate: {
+      hours: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.INTEGER,
       },
       price: {
         allowNull: false,

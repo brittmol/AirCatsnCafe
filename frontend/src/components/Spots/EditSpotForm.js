@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
-import { useParams } from "react-router";
 import { updateSpot } from "../../store/spots";
 
 function EditSpotForm({ spot }) {
