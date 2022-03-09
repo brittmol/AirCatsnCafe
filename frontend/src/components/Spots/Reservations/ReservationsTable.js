@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { removeBooking } from "../../../store/spots";
 
 function DisplayReservations({ spot, sessionUser }) {
-  const [clickShowRes, setClickShowRes] = useState(true);
+  const dispatch = useDispatch();
+  // const bookings = spot?.Bookings;
 
-  const bookings = spot?.Bookings;
+  const [clickShowRes, setClickShowRes] = useState(true);
+  const [bookings, setBookings] = useState();
+
+  useEffect(() => {
+    setBookings(spot?.Bookings)
+  }, [spot])
 
   const date = (bookingTime) =>
     new Date(bookingTime).toLocaleDateString("en-US");
@@ -48,6 +56,15 @@ function DisplayReservations({ spot, sessionUser }) {
                   <td>{booking?.hours}</td>
                   <td>{booking?.numGuests}</td>
                   <td>${booking?.price}</td>
+                  <td>
+                    <button
+                      onClick={() => {
+                        dispatch(removeBooking(booking));
+                      }}
+                    >
+                      <i className="fas fa-trash-alt" />
+                    </button>
+                  </td>
                 </tr>
               );
             })}

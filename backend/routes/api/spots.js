@@ -113,7 +113,6 @@ router.delete(
   })
 );
 
-
 // ------------------ BOOKINGS -----------------------------------------
 router.get(
   "/:id/bookings",
@@ -134,6 +133,18 @@ router.post(
   asyncHandler(async (req, res) => {
     const booking = await Booking.create(req.body);
     return res.json(booking);
+  })
+);
+
+router.delete(
+  "/:spotId/bookings/:bookingId",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const { spotId, bookingId } = req.params;
+    const booking = await Booking.findByPk(bookingId);
+    if (!booking) throw new Error("Cannot find spot");
+    await booking.destroy();
+    return res.json({});
   })
 );
 

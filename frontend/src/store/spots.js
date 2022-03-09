@@ -17,6 +17,14 @@ export const addSpot = (spot) => {
   };
 };
 
+const ADD_BOOKING = "spots/bookings/ADD_BOOKING";
+export const addBooking = (booking) => {
+  return {
+    type: ADD_BOOKING,
+    booking,
+  };
+};
+
 const DELETE_SPOT = "spots/DELETE_SPOT";
 export const deleteSpot = (spot) => {
   return {
@@ -25,10 +33,10 @@ export const deleteSpot = (spot) => {
   };
 };
 
-const ADD_BOOKING = "spots/bookings/ADD_BOOKING";
-export const addBooking = (booking) => {
+const DELETE_BOOKING = "spots/bookings/DELETE_BOOKING";
+export const deleteBooking = (booking) => {
   return {
-    type: ADD_BOOKING,
+    type: DELETE_BOOKING,
     booking,
   };
 };
@@ -100,6 +108,19 @@ export const removeSpot = (payload) => async (dispatch) => {
   }
 };
 
+export const removeBooking = (payload) => async (dispatch) => {
+  const response = await csrfFetch(
+    `/api/spots/${payload.spotId}/bookings/${payload.id}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(deleteBooking(data));
+  }
+};
 
 export const createBooking = (payload) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${payload.spotId}/bookings`, {
@@ -138,15 +159,20 @@ export default function spotReducer(state = {}, action) {
     case ADD_SPOT: {
       return (newState = { ...state, [action.spot.id]: action.spot });
     }
+    case ADD_BOOKING: {
+      newState = { ...state };
+      return newState;
+      // return (newState = { ...state, [action.booking.id]: action.booking });
+    }
     case DELETE_SPOT: {
       newState = { ...state };
       delete newState[action.spot];
       return newState;
     }
-    case ADD_BOOKING: {
-      newState = { ...state }
+    case DELETE_BOOKING: {
+      newState = { ...state };
+      delete newState[action.booking];
       return newState;
-      // return (newState = { ...state, [action.booking.id]: action.booking });
     }
     default:
       return state;
