@@ -6,7 +6,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { createBooking } from "../../../store/spots";
 
 function CreateReservationForm({ spot }) {
-  console.log("original price", spot?.hrPrice);
   const dispatch = useDispatch();
   const history = useHistory();
 
