@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 function DisplayReviews({ spot }) {
-  const [clickShowRes, setClickShowRes] = useState(false);
+  const [clickShowRes, setClickShowRes] = useState(true);
 
   const reviews = spot?.Reviews;
 

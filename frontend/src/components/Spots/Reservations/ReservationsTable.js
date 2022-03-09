@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 function DisplayReservations({ spot, sessionUser }) {
-  const [clickShowRes, setClickShowRes] = useState(false);
+  const [clickShowRes, setClickShowRes] = useState(true);
 
   const bookings = spot?.Bookings;
 
@@ -17,7 +17,10 @@ function DisplayReservations({ spot, sessionUser }) {
   if (clickShowRes) {
     reservations = (
       <div>
-        <h2>Reservations<button onClick={() => setClickShowRes(false)}>Hide</button></h2>
+        <h2>
+          Reservations
+          <button onClick={() => setClickShowRes(false)}>Hide</button>
+        </h2>
         <table>
           <thead>
             <tr>
@@ -54,7 +57,9 @@ function DisplayReservations({ spot, sessionUser }) {
     );
   } else {
     reservations = (
-      <h2>Reservations<button onClick={() => setClickShowRes(true)}>Show</button></h2>
+      <h2>
+        Reservations<button onClick={() => setClickShowRes(true)}>Show</button>
+      </h2>
     );
   }
 
