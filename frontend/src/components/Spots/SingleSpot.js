@@ -13,9 +13,11 @@ export default function SingleSpot() {
     dispatch(getSpots(spotId));
   }, [dispatch, spotId]);
 
+  const sessionUser = useSelector((state) => state.session.user);
+  console.log('sessonUser', sessionUser)
   const spots = useSelector((store) => store.spotReducer);
   const spot = spots[spotId];
-  console.log("spot", spot);
+  // console.log("spot", spot);
 
   const bookings = spot?.Bookings;
   const reviews = spot?.Reviews;
@@ -28,19 +30,8 @@ export default function SingleSpot() {
       minute: "2-digit",
     });
 
-  return (
-    <>
-      <h1>I made it to {spot?.title} </h1>
-      <ul>
-        <li>Host: {spot?.User?.firstName}</li>
-        <li>{spot?.description}</li>
-        <li>Price per Hour: ${spot?.hrPrice}</li>
-        <li>
-          Address: {spot?.address} {spot?.city}, {spot?.state} {spot?.zipCode}
-        </li>
-      </ul>
-      <DeleteSpotForm spot={spot} />
-      <EditSpotForm spot={spot} />
+  let reservations = (
+    <div>
       <h2>Reservations</h2>
       <table>
         <thead>
@@ -74,6 +65,23 @@ export default function SingleSpot() {
           })}
         </tbody>
       </table>
+    </div>
+  );
+
+  return (
+    <>
+      <h1>I made it to {spot?.title} </h1>
+      <ul>
+        <li>Host: {spot?.User?.firstName}</li>
+        <li>{spot?.description}</li>
+        <li>Price per Hour: ${spot?.hrPrice}</li>
+        <li>
+          Address: {spot?.address} {spot?.city}, {spot?.state} {spot?.zipCode}
+        </li>
+      </ul>
+      <DeleteSpotForm spot={spot} />
+      <EditSpotForm spot={spot} />
+      <>{spot?.hostId === sessionUser?.id ? reservations : null}</>
       <h2>Reviews</h2>
       {reviews?.map((review) => {
         return (
