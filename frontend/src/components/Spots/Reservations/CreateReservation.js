@@ -34,7 +34,7 @@ function CreateReservationForm({ spot }) {
     e.preventDefault();
 
     const payload = {
-      spotId: 1,
+      spotId: spot.id,
       userId: sessionUser.id,
       startTime: startDate,
       endTime: endDate,
