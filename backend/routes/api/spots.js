@@ -6,6 +6,7 @@ const { setTokenCookie, requireAuth } = require("../../utils/auth");
 const { Spot } = require("../../db/models");
 const { Booking } = require("../../db/models");
 const { User } = require("../../db/models");
+const { Review } = require("../../db/models");
 
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
@@ -53,6 +54,10 @@ router.get(
         },
         {
           model: User,
+        },
+        {
+          model: Review,
+          include: [User],
         },
       ],
     });
