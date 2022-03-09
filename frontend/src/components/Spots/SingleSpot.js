@@ -31,18 +31,28 @@ export default function SingleSpot() {
   return (
     <>
       <h1>I made it to {spot?.title} </h1>
+      <ul>
+        <li>Host: {spot?.User?.firstName}</li>
+        <li>{spot?.description}</li>
+        <li>Price per Hour: ${spot?.hrPrice}</li>
+        <li>
+          Address: {spot?.address} {spot?.city}, {spot?.state} {spot?.zipCode}
+        </li>
+      </ul>
       <DeleteSpotForm spot={spot} />
       <EditSpotForm spot={spot} />
       <h2>Reservations</h2>
       <table>
         <thead>
           <tr>
-            <th>Reservation Id</th>
+            <th>Res Id</th>
+            <th>Spot</th>
             <th>Name</th>
             <th>Date</th>
             <th>Start Time</th>
             <th>End Time</th>
-            <th>Number of Guests</th>
+            <th>Hours</th>
+            <th>Guests</th>
             <th>Price</th>
           </tr>
         </thead>
@@ -51,10 +61,12 @@ export default function SingleSpot() {
             return (
               <tr key={booking?.id}>
                 <td>{booking?.id}</td>
+                <td>{booking?.Spot?.title}</td>
                 <td>{booking?.User?.firstName}</td>
                 <td>{date(booking?.startTime)}</td>
                 <td>{time(booking?.startTime)}</td>
                 <td>{time(booking?.endTime)}</td>
+                <td>{booking?.hours}</td>
                 <td>{booking?.numGuests}</td>
                 <td>${booking?.price}</td>
               </tr>
@@ -68,6 +80,7 @@ export default function SingleSpot() {
           <div key={review.id}>
             <ul>
               <li>User: {review?.User.firstName}</li>
+              <li>Spot: {review?.Spot?.title}</li>
               <li>Rating: {review?.rating}</li>
               <li>{review?.comment}</li>
             </ul>

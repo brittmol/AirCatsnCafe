@@ -49,15 +49,15 @@ router.get(
     const spots = await Spot.findAll({
       include: [
         {
-          model: Booking,
-          include: [User],
-        },
-        {
           model: User,
         },
         {
+          model: Booking,
+          include: [User, Spot],
+        },
+        {
           model: Review,
-          include: [User],
+          include: [User, Spot],
         },
       ],
     });
