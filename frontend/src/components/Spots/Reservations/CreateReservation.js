@@ -1,23 +1,35 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { createBooking } from "../../../store/spots";
 
-function CreateReservationForm() {
+function CreateReservationForm({ spot }) {
+  console.log("original price", spot?.hrPrice);
   const dispatch = useDispatch();
   const history = useHistory();
 
   const sessionUser = useSelector((state) => state.session.user);
 
-  const [hours, setHours] = useState(1);
-  const [numGuests, setNumGuests] = useState(1);
-  const [price, setPrice] = useState(10);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  Date.prototype.addHours = function (h) {
+    this.setTime(this.getTime() + h * 60 * 60 * 1000);
+    return this;
+  };
 
-  console.log("start date", startDate);
-  console.log("end date", endDate);
+  const [hours, setHours] = useState(null);
+  const [numGuests, setNumGuests] = useState(1);
+  const [price, setPrice] = useState(null);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date().addHours(1));
+
+  useEffect(() => {
+    let diffHrs = (endDate?.getTime() - startDate?.getTime()) / 3600000;
+    let newDiffHrs = Math.abs(Math.round(diffHrs));
+    setHours(newDiffHrs);
+
+    setPrice(spot?.hrPrice * hours * numGuests);
+  }, [endDate, startDate, spot, hours, numGuests]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,11 +43,21 @@ function CreateReservationForm() {
       numGuests,
       price,
     };
+
+    const booking = await dispatch(createBooking(payload));
+
+    if (booking) {
+      history.push(`/spots/${spot.id}`);
+      // TODO: push to user page with booking
+    }
   };
 
   return (
     <>
       <form onSubmit={handleSubmit}>
+        <div> Hours: {hours} </div>
+        <div> Price: ${price} </div>
+
         <DatePicker
           selected={startDate}
           onChange={(date) => {
@@ -54,9 +76,11 @@ function CreateReservationForm() {
         />
         <DatePicker
           selected={endDate}
-          onChange={(date) => setEndDate(date)}
+          onChange={(date) => {
+            setEndDate(date);
+          }}
           minDate={startDate}
-          // maxDate={startDate}
+          maxDate={startDate}
           showTimeSelect
           // showTimeSelectOnly
           timeFormat="HH:mm"
@@ -74,18 +98,6 @@ function CreateReservationForm() {
             max="10"
             value={numGuests}
             onChange={(e) => setNumGuests(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="hours">Hours: </label>
-          <input
-            type="number"
-            id="hours"
-            name="hours"
-            min="1"
-            max="5"
-            value={hours}
-            onChange={(e) => setHours(e.target.value)}
           />
         </div>
         <button type="submit">Reserve Spot</button>

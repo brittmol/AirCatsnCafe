@@ -43,6 +43,8 @@ const validateSpot = [
   handleValidationErrors,
 ];
 
+// ------------------ SPOTS -----------------------------------------
+
 router.get(
   "/",
   asyncHandler(async (req, res) => {
@@ -62,19 +64,6 @@ router.get(
       ],
     });
     return res.json(spots);
-  })
-);
-
-router.get(
-  "/:id/bookings",
-  asyncHandler(async (req, res) => {
-    // const userId = req.session.auth.userId
-    const spotId = req.params.id;
-    const bookings = await Booking.findAll({
-      where: { spotId },
-      // order: ["startTime", "ASC"],
-    });
-    return res.json(bookings);
   })
 );
 
@@ -121,6 +110,30 @@ router.delete(
     if (!spot) throw new Error("Cannot find spot");
     await spot.destroy();
     return res.json({});
+  })
+);
+
+
+// ------------------ BOOKINGS -----------------------------------------
+router.get(
+  "/:id/bookings",
+  asyncHandler(async (req, res) => {
+    // const userId = req.session.auth.userId
+    const spotId = req.params.id;
+    const bookings = await Booking.findAll({
+      where: { spotId },
+      // order: ["startTime", "ASC"],
+    });
+    return res.json(bookings);
+  })
+);
+
+router.post(
+  "/:id/bookings",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const booking = await Booking.create(req.body);
+    return res.json(booking);
   })
 );
 

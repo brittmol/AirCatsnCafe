@@ -25,6 +25,14 @@ export const deleteSpot = (spot) => {
   };
 };
 
+const ADD_BOOKING = "spots/bookings/ADD_BOOKING";
+export const addBooking = (booking) => {
+  return {
+    type: ADD_BOOKING,
+    booking,
+  };
+};
+
 /* ----- THUNK ------ (communicates to backend api and retrieves it) */
 export const getSpots = () => async (dispatch) => {
   const response = await csrfFetch(`/api/spots`);
@@ -92,11 +100,36 @@ export const removeSpot = (payload) => async (dispatch) => {
   }
 };
 
+
+export const createBooking = (payload) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${payload.spotId}/bookings`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(addBooking(data));
+    return data; // or return null
+  } else if (response.status < 500) {
+    const data = await response.json();
+    if (data.errors) {
+      return data.errors;
+    }
+  } else {
+    return ["An error occurred. Please try again."];
+  }
+};
+
 /* ------ REDUCER ------ */
 export default function spotReducer(state = {}, action) {
   let newState = {};
   switch (action.type) {
     case LOAD_SPOTS: {
+      // console.log('Bookings in action', action.spots[0].Bookings)
       action.spots.forEach((spot) => {
         newState[spot.id] = spot;
       });
@@ -109,6 +142,11 @@ export default function spotReducer(state = {}, action) {
       newState = { ...state };
       delete newState[action.spot];
       return newState;
+    }
+    case ADD_BOOKING: {
+      newState = { ...state }
+      return newState;
+      // return (newState = { ...state, [action.booking.id]: action.booking });
     }
     default:
       return state;

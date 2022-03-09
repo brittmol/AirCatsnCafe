@@ -24,7 +24,7 @@ export default function SingleSpot() {
   return (
     <>
       <hr />
-      <CreateReservationForm />
+      <CreateReservationForm spot={spot} />
       <hr />
       <h1>I made it to {spot?.title} </h1>
       <DeleteSpotForm spot={spot} />
