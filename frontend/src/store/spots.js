@@ -2,9 +2,6 @@ import { csrfFetch } from "./csrf";
 
 /* ----- ACTIONS ------ */
 const LOAD_SPOTS = "spots/LOAD_SPOTS";
-const ADD_SPOT = "spots/ADD_SPOT";
-const DELETE_SPOT = "spots/DELETE_SPOT";
-
 export const loadSpots = (spots) => {
   return {
     type: LOAD_SPOTS,
@@ -12,6 +9,7 @@ export const loadSpots = (spots) => {
   };
 };
 
+const ADD_SPOT = "spots/ADD_SPOT";
 export const addSpot = (spot) => {
   return {
     type: ADD_SPOT,
@@ -19,6 +17,7 @@ export const addSpot = (spot) => {
   };
 };
 
+const DELETE_SPOT = "spots/DELETE_SPOT";
 export const deleteSpot = (spot) => {
   return {
     type: DELETE_SPOT,

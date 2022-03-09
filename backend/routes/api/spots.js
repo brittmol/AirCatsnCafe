@@ -5,6 +5,7 @@ const asyncHandler = require("express-async-handler");
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
 const { Spot } = require("../../db/models");
 const { Booking } = require("../../db/models");
+const { User } = require("../../db/models");
 
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
@@ -44,7 +45,17 @@ const validateSpot = [
 router.get(
   "/",
   asyncHandler(async (req, res) => {
-    const spots = await Spot.findAll();
+    const spots = await Spot.findAll({
+      include: [
+        {
+          model: Booking,
+          include: [User],
+        },
+        {
+          model: User,
+        },
+      ],
+    });
     return res.json(spots);
   })
 );
