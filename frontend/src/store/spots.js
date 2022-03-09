@@ -17,11 +17,27 @@ export const addSpot = (spot) => {
   };
 };
 
+const ADD_BOOKING = "spots/bookings/ADD_BOOKING";
+export const addBooking = (booking) => {
+  return {
+    type: ADD_BOOKING,
+    booking,
+  };
+};
+
 const DELETE_SPOT = "spots/DELETE_SPOT";
 export const deleteSpot = (spot) => {
   return {
     type: DELETE_SPOT,
     spot,
+  };
+};
+
+const DELETE_BOOKING = "spots/bookings/DELETE_BOOKING";
+export const deleteBooking = (booking) => {
+  return {
+    type: DELETE_BOOKING,
+    booking,
   };
 };
 
@@ -92,11 +108,49 @@ export const removeSpot = (payload) => async (dispatch) => {
   }
 };
 
+export const removeBooking = (payload) => async (dispatch) => {
+  const response = await csrfFetch(
+    `/api/spots/${payload.spotId}/bookings/${payload.id}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(deleteBooking(data));
+  }
+};
+
+export const createBooking = (payload) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${payload.spotId}/bookings`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(addBooking(data));
+    return data; // or return null
+  } else if (response.status < 500) {
+    const data = await response.json();
+    if (data.errors) {
+      return data.errors;
+    }
+  } else {
+    return ["An error occurred. Please try again."];
+  }
+};
+
 /* ------ REDUCER ------ */
 export default function spotReducer(state = {}, action) {
   let newState = {};
   switch (action.type) {
     case LOAD_SPOTS: {
+      // console.log('Bookings in action', action.spots[0].Bookings)
       action.spots.forEach((spot) => {
         newState[spot.id] = spot;
       });
@@ -105,9 +159,19 @@ export default function spotReducer(state = {}, action) {
     case ADD_SPOT: {
       return (newState = { ...state, [action.spot.id]: action.spot });
     }
+    case ADD_BOOKING: {
+      newState = { ...state };
+      return newState;
+      // return (newState = { ...state, [action.booking.id]: action.booking });
+    }
     case DELETE_SPOT: {
       newState = { ...state };
       delete newState[action.spot];
+      return newState;
+    }
+    case DELETE_BOOKING: {
+      newState = { ...state };
+      delete newState[action.booking];
       return newState;
     }
     default:

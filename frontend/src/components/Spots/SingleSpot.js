@@ -6,6 +6,7 @@ import EditSpotForm from "./EditSpotForm";
 import DeleteSpotForm from "./DeleteSpotForm";
 import DisplayReservations from "./Reservations/ReservationsTable";
 import DisplayReviews from "./Reviews/SingleSpotReviews";
+import CreateReservationForm from "./Reservations/CreateReservation";
 
 export default function SingleSpot() {
   const { spotId } = useParams();
@@ -22,6 +23,9 @@ export default function SingleSpot() {
 
   return (
     <>
+      <hr />
+      <CreateReservationForm spot={spot} />
+      <hr />
       <h1>I made it to {spot?.title} </h1>
       <DeleteSpotForm spot={spot} />
       <EditSpotForm spot={spot} />
@@ -33,8 +37,11 @@ export default function SingleSpot() {
           Address: {spot?.address} {spot?.city}, {spot?.state} {spot?.zipCode}
         </li>
       </ul>
+      <hr />
       <DisplayReservations spot={spot} sessionUser={sessionUser} />
+      <hr />
       <DisplayReviews spot={spot} />
+      <hr />
     </>
   );
 }

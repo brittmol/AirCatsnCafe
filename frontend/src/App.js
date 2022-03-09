@@ -5,11 +5,14 @@ import SignupFormPage from "./components/SignupFormPage";
 import Spots from "./components/Spots/AllSpots";
 import SingleSpot from "./components/Spots/SingleSpot";
 import CreateSpotForm from "./components/Spots/CreateSpotForm";
+import UserProfile from "./components/UserProfile/UserProfile";
 // import LoginFormPage from "./components/LoginFormPage";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import { Modal } from "./context/Modal";
 import SplashPage from "./components/SplashPage/SplashPage";
+
+
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -46,6 +49,9 @@ function App() {
           </Route>
           <Route exact path="/create">
             <CreateSpotForm />
+          </Route>
+          <Route exact path="/users/:userId/profile" >
+            <UserProfile />
           </Route>
         </Switch>
       )}
