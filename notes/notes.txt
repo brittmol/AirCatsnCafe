@@ -59,3 +59,10 @@ on mistake branch, add and commit
 git log
 git checkout aa2ee5......... (of commit number) migrations/
 (pulls to main)
+
+
+
+
+------------
+
+npm install react-datepicker --save
