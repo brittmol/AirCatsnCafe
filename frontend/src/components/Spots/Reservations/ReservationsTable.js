@@ -4,14 +4,14 @@ import { removeBooking } from "../../../store/spots";
 
 function DisplayReservations({ spot, sessionUser }) {
   const dispatch = useDispatch();
-  // const bookings = spot?.Bookings;
+  const bookings = spot?.Bookings;
 
   const [clickShowRes, setClickShowRes] = useState(true);
-  const [bookings, setBookings] = useState();
+  // const [bookings, setBookings] = useState();
 
-  useEffect(() => {
-    setBookings(spot?.Bookings)
-  }, [spot])
+  // useEffect(() => {
+  //   setBookings(spot?.Bookings)
+  // }, [spot])
 
   const date = (bookingTime) =>
     new Date(bookingTime).toLocaleDateString("en-US");

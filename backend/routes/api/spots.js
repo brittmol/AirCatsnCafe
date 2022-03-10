@@ -121,7 +121,6 @@ router.get(
     const spotId = req.params.id;
     const bookings = await Booking.findAll({
       where: { spotId },
-      // order: ["startTime", "ASC"],
     });
     return res.json(bookings);
   })

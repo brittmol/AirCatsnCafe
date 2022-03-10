@@ -16,17 +16,25 @@ function CreateReservationForm({ spot }) {
     return this;
   };
 
+  let playDate = new Date();
+  console.log("new date", playDate);
+  console.log("set minutes", new Date(playDate.setMinutes(45)));
+
+  let dateNextHr = new Date().addHours(1);
+
   const [hours, setHours] = useState(null);
   const [numGuests, setNumGuests] = useState(1);
   const [price, setPrice] = useState(null);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date().addHours(1));
+  const [startDate, setStartDate] = useState(
+    new Date(dateNextHr.setMinutes(0))
+  );
+  const [endDate, setEndDate] = useState(new Date(startDate).addHours(1));
 
   useEffect(() => {
     let diffHrs = (endDate?.getTime() - startDate?.getTime()) / 3600000;
     let newDiffHrs = Math.abs(Math.round(diffHrs));
     setHours(newDiffHrs);
-
+    // setEndDate(startDate.addHours(1))
     setPrice(spot?.hrPrice * hours * numGuests);
   }, [endDate, startDate, spot, hours, numGuests]);
 
@@ -49,6 +57,12 @@ function CreateReservationForm({ spot }) {
       history.push(`/spots/${spot.id}`);
       // TODO: push to user page with booking
     }
+
+    setHours(null);
+    setNumGuests(1);
+    setPrice(null);
+    setStartDate(new Date());
+    setEndDate(new Date().addHours(1));
   };
 
   return (
