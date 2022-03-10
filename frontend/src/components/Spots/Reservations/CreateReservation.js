@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import DatePicker from "react-datepicker";
+import setHours from "date-fns/setHours";
+import setMinutes from "date-fns/setMinutes";
+import setSeconds from "date-fns/setSeconds";
+
 import "react-datepicker/dist/react-datepicker.css";
 import { createBooking } from "../../../store/spots";
 
@@ -16,27 +20,24 @@ function CreateReservationForm({ spot }) {
     return this;
   };
 
-  let playDate = new Date();
-  console.log("new date", playDate);
-  console.log("set minutes", new Date(playDate.setMinutes(45)));
+  let dateNextHr = setMinutes(setSeconds(new Date().addHours(1), 0), 0);
 
-  let dateNextHr = new Date().addHours(1);
-
-  const [hours, setHours] = useState(null);
+  const [hrs, setHrs] = useState(null);
   const [numGuests, setNumGuests] = useState(1);
   const [price, setPrice] = useState(null);
-  const [startDate, setStartDate] = useState(
-    new Date(dateNextHr.setMinutes(0))
-  );
-  const [endDate, setEndDate] = useState(new Date(startDate).addHours(1));
+  const [startDate, setStartDate] = useState(dateNextHr);
+  const [endDate, setEndDate] = useState(null);
 
   useEffect(() => {
     let diffHrs = (endDate?.getTime() - startDate?.getTime()) / 3600000;
     let newDiffHrs = Math.abs(Math.round(diffHrs));
-    setHours(newDiffHrs);
-    // setEndDate(startDate.addHours(1))
-    setPrice(spot?.hrPrice * hours * numGuests);
-  }, [endDate, startDate, spot, hours, numGuests]);
+    setHrs(newDiffHrs);
+    setPrice(spot?.hrPrice * hrs * numGuests);
+  }, [endDate, startDate, spot, hrs, numGuests]);
+
+  useEffect(() => {
+    if (startDate >= endDate) setEndDate(new Date(startDate).addHours(1));
+  }, [startDate, endDate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,7 +47,7 @@ function CreateReservationForm({ spot }) {
       userId: sessionUser.id,
       startTime: startDate,
       endTime: endDate,
-      hours,
+      hours: hrs,
       numGuests,
       price,
     };
@@ -58,7 +59,7 @@ function CreateReservationForm({ spot }) {
       // TODO: push to user page with booking
     }
 
-    setHours(null);
+    setHrs(null);
     setNumGuests(1);
     setPrice(null);
     setStartDate(new Date());
@@ -68,35 +69,43 @@ function CreateReservationForm({ spot }) {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <div> Hours: {hours} </div>
+        <div> Hours: {hrs} </div>
         <div> Price: ${price} </div>
 
         <DatePicker
           selected={startDate}
-          onChange={(date) => {
-            setStartDate(date);
-            setEndDate(date);
-          }}
+          onChange={(date) => setStartDate(date)}
           minDate={new Date()}
+          filterDate={(date) => date.getDay() !== 6 && date.getDay() !== 0}
           // isClearable
           // showMonthDropdown
           showTimeSelect
-          timeFormat="HH:mm"
+          filterTime={
+            (time) =>
+              new Date(time) > new Date().getTime() && // selected time > current time
+              new Date(time) > setHours(new Date(time), 8).getTime() && // between 9am
+              new Date(time) < setHours(new Date(time), 19).getTime() // and 6pm
+          }
+          timeFormat="h:mm aa"
           timeIntervals={60}
           timeCaption="time"
           dateFormat="MMMM d, yyyy h:mm aa"
-          filterDate={(date) => date.getDay() !== 6 && date.getDay() !== 0}
         />
         <DatePicker
           selected={endDate}
-          onChange={(date) => {
-            setEndDate(date);
-          }}
-          minDate={startDate}
-          maxDate={startDate}
+          onChange={(date) => setEndDate(date)}
+          filterDate={(date) => date === startDate}
+          // minDate={startDate}
+          // maxDate={startDate}
           showTimeSelect
           // showTimeSelectOnly
-          timeFormat="HH:mm"
+          filterTime={
+            (time) =>
+              new Date(time) > startDate.getTime() && // selected time > start time
+              new Date(time) > setHours(startDate, 9).getTime() && // between 10am
+              new Date(time) < setHours(startDate, 19).getTime() // and 7pm
+          }
+          timeFormat="h:mm aa"
           timeIntervals={60}
           timeCaption="time"
           dateFormat="MMMM d, yyyy h:mm aa"
