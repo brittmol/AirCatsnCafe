@@ -94,10 +94,6 @@ router.put(
   asyncHandler(async (req, res) => {
     const spot = await Spot.findByPk(req.params.id);
     const updatedSpot = await spot.update(req.body);
-    // const updatedSpotx = await Spot.findByPk(updatedSpot.id, {
-    //   include: [User],
-    // });
-    // return res.json(updatedSpotx);
     return res.json(updatedSpot);
   })
 );
@@ -109,7 +105,7 @@ router.delete(
     const spot = await Spot.findByPk(req.params.id);
     if (!spot) throw new Error("Cannot find spot");
     await spot.destroy();
-    return res.json({});
+    return res.json(spot);
   })
 );
 
@@ -132,14 +128,21 @@ router.post(
   asyncHandler(async (req, res) => {
     const booking = await Booking.create(req.body);
     const newBooking = await Booking.findByPk(booking.id, {
-      include: [
-        {
-          model: User,
-        },
-        {
-          model: Spot,
-        },
-      ],
+      include: [{ model: User }, { model: Spot }],
+    });
+    return res.json(newBooking);
+  })
+);
+
+router.put(
+  "/:spotId/bookings/:bookingId",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const { spotId, bookingId } = req.params;
+    const booking = await Booking.findByPk(bookingId);
+    const updatedBooking = await booking.update(req.body);
+    const newBooking = await Booking.findByPk(updatedBooking.id, {
+      include: [{ model: User }, { model: Spot }],
     });
     return res.json(newBooking);
   })

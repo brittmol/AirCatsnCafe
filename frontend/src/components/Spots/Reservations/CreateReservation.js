@@ -39,8 +39,8 @@ function CreateReservationForm({ spot }) {
     if (startDate >= endDate) setEndDate(new Date(startDate).addHours(1));
   }, [startDate, endDate]);
 
-  console.log("start date", startDate);
-  console.log("end date", endDate);
+  // console.log("start date", startDate);
+  // console.log("end date", endDate);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -13,8 +13,8 @@ export default function SingleSpot() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getSpots(spotId));
-  }, [dispatch, spotId]);
+    dispatch(getSpots());
+  }, [dispatch]);
 
   const sessionUser = useSelector((state) => state.session.user);
   const spots = useSelector((store) => store.spotReducer);
