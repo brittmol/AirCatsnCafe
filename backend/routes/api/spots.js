@@ -132,7 +132,17 @@ router.post(
   requireAuth,
   asyncHandler(async (req, res) => {
     const booking = await Booking.create(req.body);
-    return res.json(booking);
+    const newBooking = await Booking.findByPk(booking.id, {
+      include: [
+        {
+          model: User,
+        },
+        {
+          model: Spot,
+        },
+      ],
+    });
+    return res.json(newBooking);
   })
 );
 
@@ -144,7 +154,7 @@ router.delete(
     const booking = await Booking.findByPk(bookingId);
     if (!booking) throw new Error("Cannot find spot");
     await booking.destroy();
-    return res.json({});
+    return res.json(booking);
   })
 );
 

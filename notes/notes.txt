@@ -41,9 +41,13 @@ npx sequelize-cli seed:generate --name
 
 RESTART PSQL:
 sudo service postgresql restart
+bam5716*
 
 RESET DATABASE TO SEEDED FILES:
 flask seed reset
+
+KILL TERMINALS:
+kill -9 $(pgrep bash)
 
 
 npx sequelize model:generate --name User --attributes username:string,email:string,hashedPassword:string

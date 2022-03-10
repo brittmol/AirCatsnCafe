@@ -115,7 +115,6 @@ export const removeBooking = (payload) => async (dispatch) => {
       method: "DELETE",
     }
   );
-
   if (response.ok) {
     const data = await response.json();
     dispatch(deleteBooking(data));
@@ -161,8 +160,8 @@ export default function spotReducer(state = {}, action) {
     }
     case ADD_BOOKING: {
       newState = { ...state };
+      newState[action.booking.spotId].Bookings.push(action.booking)
       return newState;
-      // return (newState = { ...state, [action.booking.id]: action.booking });
     }
     case DELETE_SPOT: {
       newState = { ...state };
@@ -171,7 +170,11 @@ export default function spotReducer(state = {}, action) {
     }
     case DELETE_BOOKING: {
       newState = { ...state };
-      delete newState[action.booking];
+      newState[action.booking.spotId].Bookings.forEach((bk, i) => {
+        if (action.booking.id === bk.id) {
+          delete newState[action.booking.spotId].Bookings[i];
+        }
+      });
       return newState;
     }
     default:
