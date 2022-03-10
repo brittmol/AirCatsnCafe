@@ -39,6 +39,9 @@ function CreateReservationForm({ spot }) {
     if (startDate >= endDate) setEndDate(new Date(startDate).addHours(1));
   }, [startDate, endDate]);
 
+  console.log("start date", startDate);
+  console.log("end date", endDate);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -62,8 +65,8 @@ function CreateReservationForm({ spot }) {
     setHrs(null);
     setNumGuests(1);
     setPrice(null);
-    setStartDate(new Date());
-    setEndDate(new Date().addHours(1));
+    setStartDate(dateNextHr);
+    setEndDate(null);
   };
 
   return (
@@ -71,15 +74,20 @@ function CreateReservationForm({ spot }) {
       <form onSubmit={handleSubmit}>
         <div> Hours: {hrs} </div>
         <div> Price: ${price} </div>
-
         <DatePicker
+          placeholderText="Click to select a Date"
           selected={startDate}
           onChange={(date) => setStartDate(date)}
           minDate={new Date()}
           filterDate={(date) => date.getDay() !== 6 && date.getDay() !== 0}
-          // isClearable
-          // showMonthDropdown
+          dateFormat="MMMM d, yyyy"
+        />
+        <DatePicker
+          placeholderText="Click to select a Start Time"
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
           showTimeSelect
+          showTimeSelectOnly
           filterTime={
             (time) =>
               new Date(time) > new Date().getTime() && // selected time > current time
@@ -89,16 +97,15 @@ function CreateReservationForm({ spot }) {
           timeFormat="h:mm aa"
           timeIntervals={60}
           timeCaption="time"
-          dateFormat="MMMM d, yyyy h:mm aa"
+          dateFormat="h:mm aa"
         />
         <DatePicker
+          placeholderText="Click to select a End Time"
           selected={endDate}
           onChange={(date) => setEndDate(date)}
           filterDate={(date) => date === startDate}
-          // minDate={startDate}
-          // maxDate={startDate}
           showTimeSelect
-          // showTimeSelectOnly
+          showTimeSelectOnly
           filterTime={
             (time) =>
               new Date(time) > startDate.getTime() && // selected time > start time
@@ -108,7 +115,7 @@ function CreateReservationForm({ spot }) {
           timeFormat="h:mm aa"
           timeIntervals={60}
           timeCaption="time"
-          dateFormat="MMMM d, yyyy h:mm aa"
+          dateFormat="h:mm aa"
         />
         <div>
           <label htmlFor="numGuests">Number of Guests: </label>
