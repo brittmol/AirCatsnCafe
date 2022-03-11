@@ -83,7 +83,22 @@ router.post(
   validateSpot,
   asyncHandler(async (req, res) => {
     const spot = await Spot.create(req.body);
-    return res.json(spot);
+    const newSpot = await Spot.findByPk(spot.id, {
+      include: [
+        {
+          model: User,
+        },
+        {
+          model: Booking,
+          include: [User, Spot],
+        },
+        {
+          model: Review,
+          include: [User, Spot],
+        },
+      ],
+    });
+    return res.json(newSpot);
   })
 );
 
@@ -94,7 +109,22 @@ router.put(
   asyncHandler(async (req, res) => {
     const spot = await Spot.findByPk(req.params.id);
     const updatedSpot = await spot.update(req.body);
-    return res.json(updatedSpot);
+    const newSpot = await Spot.findByPk(updatedSpot.id, {
+      include: [
+        {
+          model: User,
+        },
+        {
+          model: Booking,
+          include: [User, Spot],
+        },
+        {
+          model: Review,
+          include: [User, Spot],
+        },
+      ],
+    });
+    return res.json(newSpot);
   })
 );
 

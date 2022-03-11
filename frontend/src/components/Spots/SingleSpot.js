@@ -3,7 +3,6 @@ import { getSpots } from "../../store/spots";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import EditSpotForm from "./EditSpotForm";
-import DeleteSpotForm from "./DeleteSpotForm";
 import DisplayReservations from "./Reservations/ReservationsTable";
 import DisplayReviews from "./Reviews/SingleSpotReviews";
 import CreateReservationForm from "./Reservations/CreateReservation";
@@ -26,9 +25,8 @@ export default function SingleSpot() {
       <hr />
       <CreateReservationForm spot={spot} />
       <hr />
-      <h1>I made it to {spot?.title} </h1>
-      <DeleteSpotForm spot={spot} />
       <EditSpotForm spot={spot} />
+      {/* <h1>I made it to {spot?.title} </h1>
       <ul>
         <li>Host: {spot?.User?.firstName}</li>
         <li>{spot?.description}</li>
@@ -36,7 +34,7 @@ export default function SingleSpot() {
         <li>
           Address: {spot?.address} {spot?.city}, {spot?.state} {spot?.zipCode}
         </li>
-      </ul>
+      </ul> */}
       <hr />
       <DisplayReservations spot={spot} sessionUser={sessionUser} />
       <hr />
