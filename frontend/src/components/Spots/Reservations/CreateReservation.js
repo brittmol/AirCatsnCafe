@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { createBooking } from "../../../store/spots";
 import DatePicker from "react-datepicker";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import setSeconds from "date-fns/setSeconds";
-
 import "react-datepicker/dist/react-datepicker.css";
-import { createBooking } from "../../../store/spots";
 
 function CreateReservationForm({ spot }) {
   const dispatch = useDispatch();

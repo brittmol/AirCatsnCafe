@@ -12,8 +12,6 @@ import Navigation from "./components/Navigation";
 import { Modal } from "./context/Modal";
 import SplashPage from "./components/SplashPage/SplashPage";
 
-// import EditExample from "./components/Spots/Reservations/EditReservation";
-
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -54,9 +52,6 @@ function App() {
           <Route exact path="/users/:userId/profile">
             <UserProfile />
           </Route>
-          {/* <Route exact path="/edit">
-            <EditExample />
-          </Route> */}
         </Switch>
       )}
     </>
