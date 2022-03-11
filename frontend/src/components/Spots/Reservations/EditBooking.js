@@ -3,8 +3,6 @@ import { useDispatch } from "react-redux";
 import { updateBooking, removeBooking } from "../../../store/spots";
 import DatePicker from "react-datepicker";
 import setHours from "date-fns/setHours";
-import setMinutes from "date-fns/setMinutes";
-import setSeconds from "date-fns/setSeconds";
 import "react-datepicker/dist/react-datepicker.css";
 
 function EditBooking({ booking }) {
@@ -138,7 +136,7 @@ function EditBooking({ booking }) {
               dateFormat="h:mm aa"
             />
           </td>
-          <td>{booking?.hours}</td>
+          <td>{hrs}</td>
           <td>
             <input
               type="number"
@@ -150,7 +148,7 @@ function EditBooking({ booking }) {
               onChange={(e) => setNumGuests(e.target.value)}
             />
           </td>
-          <td>${booking?.price}</td>
+          <td>${price}</td>
         </>
       ) : (
         <>
