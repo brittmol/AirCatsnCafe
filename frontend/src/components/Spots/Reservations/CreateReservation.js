@@ -19,12 +19,28 @@ function CreateReservationForm({ spot }) {
     return this;
   };
 
-  let dateNextHr = setMinutes(setSeconds(new Date().addHours(1), 0), 0);
+  const startDateValue = () => {
+    let today = new Date();
+    let tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    let dateNextHr = setMinutes(setSeconds(today.addHours(1), 0), 0);
+    let dateNextDay = setHours(setMinutes(setSeconds(tomorrow, 0), 0), 9);
+    let dateThisDay = setHours(setMinutes(setSeconds(today, 0), 0), 9);
+
+    let startVal =
+      today.getHours() < 9
+        ? dateThisDay
+        : today.getHours() > 19
+        ? dateNextDay
+        : dateNextHr;
+    return startVal;
+  };
 
   const [hrs, setHrs] = useState(null);
   const [numGuests, setNumGuests] = useState(1);
   const [price, setPrice] = useState(null);
-  const [startDate, setStartDate] = useState(dateNextHr);
+  const [startDate, setStartDate] = useState(startDateValue());
   const [endDate, setEndDate] = useState(null);
 
   useEffect(() => {
@@ -64,7 +80,7 @@ function CreateReservationForm({ spot }) {
     setHrs(null);
     setNumGuests(1);
     setPrice(null);
-    setStartDate(dateNextHr);
+    setStartDate(startDateValue());
     setEndDate(null);
   };
 
