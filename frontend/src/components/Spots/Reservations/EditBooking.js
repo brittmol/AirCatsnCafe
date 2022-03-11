@@ -78,6 +78,10 @@ function EditBooking({ booking }) {
       price,
     };
     dispatch(updateBooking(payload));
+    setInEditMode({
+      status: false,
+      rowKey: null,
+    });
   };
 
   return (

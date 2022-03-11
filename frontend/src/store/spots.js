@@ -186,6 +186,12 @@ export default function spotReducer(state = {}, action) {
     }
     case ADD_BOOKING: {
       newState = { ...state };
+      newState[action.booking.spotId].Bookings.forEach((bk, i) => {
+        // for Edit Booking
+        if (action.booking.id === bk.id) {
+          delete newState[action.booking.spotId].Bookings[i];
+        }
+      });
       newState[action.booking.spotId].Bookings.push(action.booking);
       return newState;
     }
