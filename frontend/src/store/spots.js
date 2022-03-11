@@ -144,6 +144,32 @@ export const createBooking = (payload) => async (dispatch) => {
   }
 };
 
+export const updateBooking = (payload) => async (dispatch) => {
+  const response = await csrfFetch(
+    `/api/spots/${payload.spotId}/bookings/${payload.id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(addBooking(data));
+    return data;
+  } else if (response.status < 500) {
+    const data = await response.json();
+    if (data.errors) {
+      return data.errors;
+    }
+  } else {
+    return ["An error occurred. Please try again."];
+  }
+};
+
 /* ------ REDUCER ------ */
 export default function spotReducer(state = {}, action) {
   let newState = {};
@@ -160,7 +186,13 @@ export default function spotReducer(state = {}, action) {
     }
     case ADD_BOOKING: {
       newState = { ...state };
-      newState[action.booking.spotId].Bookings.push(action.booking)
+      newState[action.booking.spotId].Bookings.forEach((bk, i) => {
+        // for Edit Booking
+        if (action.booking.id === bk.id) {
+          delete newState[action.booking.spotId].Bookings[i];
+        }
+      });
+      newState[action.booking.spotId].Bookings.push(action.booking);
       return newState;
     }
     case DELETE_SPOT: {

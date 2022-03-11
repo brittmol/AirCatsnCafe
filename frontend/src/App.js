@@ -12,7 +12,6 @@ import Navigation from "./components/Navigation";
 import { Modal } from "./context/Modal";
 import SplashPage from "./components/SplashPage/SplashPage";
 
-
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -50,7 +49,7 @@ function App() {
           <Route exact path="/create">
             <CreateSpotForm />
           </Route>
-          <Route exact path="/users/:userId/profile" >
+          <Route exact path="/users/:userId/profile">
             <UserProfile />
           </Route>
         </Switch>
