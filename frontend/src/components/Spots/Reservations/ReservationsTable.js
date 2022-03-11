@@ -6,14 +6,6 @@ function DisplayReservations({ spot, sessionUser }) {
 
   const [clickShowRes, setClickShowRes] = useState(true);
 
-  // const date = (bookingTime) =>
-  //   new Date(bookingTime).toLocaleDateString("en-US");
-  // const time = (bookingTime) =>
-  //   new Date(bookingTime).toLocaleTimeString([], {
-  //     hour: "2-digit",
-  //     minute: "2-digit",
-  //   });
-
   let reservations;
   if (clickShowRes) {
     reservations = (
@@ -39,28 +31,6 @@ function DisplayReservations({ spot, sessionUser }) {
           <tbody>
             {bookings?.map((booking) => {
               return <EditBooking key={booking?.id} booking={booking} />;
-              // return (
-              //   <tr key={booking?.id}>
-              //     <td>{booking?.id}</td>
-              //     <td>{booking?.Spot?.title}</td>
-              //     <td>{booking?.User?.firstName}</td>
-              //     <td>{date(booking?.startTime)}</td>
-              //     <td>{time(booking?.startTime)}</td>
-              //     <td>{time(booking?.endTime)}</td>
-              //     <td>{booking?.hours}</td>
-              //     <td>{booking?.numGuests}</td>
-              //     <td>${booking?.price}</td>
-              //     <td>
-              //       <button
-              //         onClick={() => {
-              //           dispatch(removeBooking(booking));
-              //         }}
-              //       >
-              //         <i className="fas fa-trash-alt" />
-              //       </button>
-              //     </td>
-              //   </tr>
-              // );
             })}
           </tbody>
         </table>
