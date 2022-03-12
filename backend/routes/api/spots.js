@@ -190,5 +190,57 @@ router.delete(
   })
 );
 
+// ------------------ REVIEWS -----------------------------------------
+
+router.get(
+  "/:id/reviews",
+  asyncHandler(async (req, res) => {
+    // const userId = req.session.auth.userId
+    const spotId = req.params.id;
+    const reviews = await Review.findAll({
+      where: { spotId },
+    });
+    return res.json(reviews);
+  })
+);
+
+router.post(
+  "/:id/reviews",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const review = await Review.create(req.body);
+    const newReview = await Review.findByPk(review.id, {
+      include: [{ model: User }, { model: Spot }],
+    });
+    return res.json(newReview);
+  })
+);
+
+router.put(
+  "/:spotId/reviews/:reviewId",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const { spotId, reviewId } = req.params;
+    const review = await Review.findByPk(reviewId);
+    const updatedReview = await review.update(req.body);
+    const newReview = await Review.findByPk(updatedReview.id, {
+      include: [{ model: User }, { model: Spot }],
+    });
+    return res.json(newReview);
+  })
+);
+
+router.delete(
+  "/:spotId/reviews/:reviewId",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const { spotId, reviewId } = req.params;
+    const review = await Review.findByPk(reviewId);
+    if (!review) throw new Error("Cannot find spot");
+    await review.destroy();
+    return res.json(review);
+  })
+);
+
 // ------------------ EXPORTS ------------------------------------------
 module.exports = router;

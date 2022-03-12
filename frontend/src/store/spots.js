@@ -25,6 +25,14 @@ export const addBooking = (booking) => {
   };
 };
 
+const ADD_REVIEW = "spots/reviews/ADD_REVIEW";
+export const addReview = (review) => {
+  return {
+    type: ADD_REVIEW,
+    review,
+  };
+};
+
 const DELETE_SPOT = "spots/DELETE_SPOT";
 export const deleteSpot = (spot) => {
   return {
@@ -38,6 +46,14 @@ export const deleteBooking = (booking) => {
   return {
     type: DELETE_BOOKING,
     booking,
+  };
+};
+
+const DELETE_REVIEW = "spots/reviews/DELETE_REVIEW";
+export const deleteReview = (review) => {
+  return {
+    type: DELETE_REVIEW,
+    review,
   };
 };
 
@@ -108,19 +124,6 @@ export const removeSpot = (payload) => async (dispatch) => {
   }
 };
 
-export const removeBooking = (payload) => async (dispatch) => {
-  const response = await csrfFetch(
-    `/api/spots/${payload.spotId}/bookings/${payload.id}`,
-    {
-      method: "DELETE",
-    }
-  );
-  if (response.ok) {
-    const data = await response.json();
-    dispatch(deleteBooking(data));
-  }
-};
-
 export const createBooking = (payload) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${payload.spotId}/bookings`, {
     method: "POST",
@@ -170,6 +173,81 @@ export const updateBooking = (payload) => async (dispatch) => {
   }
 };
 
+export const removeBooking = (payload) => async (dispatch) => {
+  const response = await csrfFetch(
+    `/api/spots/${payload.spotId}/bookings/${payload.id}`,
+    {
+      method: "DELETE",
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(deleteBooking(data));
+  }
+};
+
+export const createReview = (payload) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${payload.spotId}/reviews`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(addReview(data));
+    return data; // or return null
+  } else if (response.status < 500) {
+    const data = await response.json();
+    if (data.errors) {
+      return data.errors;
+    }
+  } else {
+    return ["An error occurred. Please try again."];
+  }
+};
+
+export const updateReview = (payload) => async (dispatch) => {
+  const response = await csrfFetch(
+    `/api/spots/${payload.spotId}/reviews/${payload.id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(addReview(data));
+    return data;
+  } else if (response.status < 500) {
+    const data = await response.json();
+    if (data.errors) {
+      return data.errors;
+    }
+  } else {
+    return ["An error occurred. Please try again."];
+  }
+};
+
+export const removeReview = (payload) => async (dispatch) => {
+  const response = await csrfFetch(
+    `/api/spots/${payload.spotId}/reviews/${payload.id}`,
+    {
+      method: "DELETE",
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(deleteReview(data));
+  }
+};
+
 /* ------ REDUCER ------ */
 export default function spotReducer(state = {}, action) {
   let newState = {};
@@ -195,6 +273,17 @@ export default function spotReducer(state = {}, action) {
       newState[action.booking.spotId].Bookings.push(action.booking);
       return newState;
     }
+    case ADD_REVIEW: {
+      newState = { ...state };
+      newState[action.review.spotId].Reviews.forEach((rv, i) => {
+        // for Edit Review
+        if (action.review.id === rv.id) {
+          delete newState[action.review.spotId].Reviews[i];
+        }
+      });
+      newState[action.review.spotId].Reviews.push(action.review);
+      return newState;
+    }
     case DELETE_SPOT: {
       newState = { ...state };
       delete newState[action.spot];
@@ -205,6 +294,15 @@ export default function spotReducer(state = {}, action) {
       newState[action.booking.spotId].Bookings.forEach((bk, i) => {
         if (action.booking.id === bk.id) {
           delete newState[action.booking.spotId].Bookings[i];
+        }
+      });
+      return newState;
+    }
+    case DELETE_REVIEW: {
+      newState = { ...state };
+      newState[action.review.spotId].Reviews.forEach((rv, i) => {
+        if (action.review.id === rv.id) {
+          delete newState[action.review.spotId].Reviews[i];
         }
       });
       return newState;
