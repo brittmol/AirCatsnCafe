@@ -1,4 +1,8 @@
 "use strict";
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("Spots", {
@@ -48,9 +52,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    });
+    }, options);
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Spots");
+    await queryInterface.dropTable("Spots", options);
   },
 };
